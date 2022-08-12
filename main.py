@@ -6,6 +6,10 @@ import math
 import sys
 
 
+def algorithm(redraw, grid, start_node, end_node):
+    pass
+
+
 def get_clicked_pos(pos, rows, width, enlarge):
     gap = (width // rows) * enlarge
     y, x = pos
@@ -65,7 +69,7 @@ def redraw_main(display, grid, rows, width):
 
 
 def main_loop():
-    rows = 25
+    rows = 50
     grid = make_grid(rows, rect.width)
 
     start_node = None
@@ -116,6 +120,21 @@ def main_loop():
                     start_node = None
                 elif spot == end_node:
                     end_node = None
+
+            # Keydown detection
+            if event.type == pygame.KEYDOWN:
+                # Run algorithm
+                if event.key == pygame.K_SPACE and not started:
+                    # Update all spots' neighbors
+                    for row in grid:
+                        for spot in row:
+                            spot.update_neighbors(grid)
+
+                    # Run algorithm
+                    algorithm(
+                        lambda: redraw_main(
+                            display, grid, rows, rect.width), 
+                                grid, start_node, end_node)
 
         # Update display
         redraw_main(display, grid, rows, rect.width)
