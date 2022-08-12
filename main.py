@@ -6,6 +6,16 @@ import math
 import sys
 
 
+def get_clicked_pos(pos, rows, width, enlarge):
+    gap = (width // rows) * enlarge
+    y, x = pos
+
+    row = y // gap
+    col = x // gap
+
+    return row, col
+
+
 def make_grid(rows, width):
     grid = []
     gap = width // rows
@@ -55,8 +65,8 @@ def redraw_main(display, grid, rows, width):
 
 
 def main_loop():
-    rows = 25
-    grid = make_grid(rows, rect.height)
+    rows = 10
+    grid = make_grid(rows, rect.width)
 
     start_node = None
     end_node = None
@@ -64,14 +74,38 @@ def main_loop():
     run = True
     started = False
     while run:
+        # Event loop
         for event in pygame.event.get():
+            # Quit detection
             if event.type == pygame.QUIT:
                 run = False
 
+            # Path finding has started
             if started:
                 continue
 
-        redraw_main(display, grid, rows, rect.height)
+            # Mouse down detection
+            pressed = pygame.mouse.get_pressed()
+            if pressed[0]:  # left click (draw nodes)
+                mouse_pos = pygame.mouse.get_pos()
+                row, col = get_clicked_pos(
+                    mouse_pos, rows, rect.width, enlarge)
+                spot = grid[row][col]
+
+                if not start_node and spot != end_node:  # make start node
+                    start_node = spot
+                    start_node.make_start()
+                elif not end_node and spot != start_node:  # make end node
+                    end_node = spot
+                    end_node.make_end()
+                elif spot != start_node and spot != end_node:  # make barrier
+                    spot.make_barrier()
+
+            elif pressed[2]:  # right click
+                pass
+
+        # Update display
+        redraw_main(display, grid, rows, rect.width)
 
     pygame.quit()
     sys.exit()
@@ -82,10 +116,7 @@ if __name__ == "__main__":
 
     # Initialize window
     rect = pygame.Rect(0, 0, 400, 400)
-    # enlarge = 2
-    enlarge = max(
-        (pygame.display.Info().current_h - 80) / rect.width,
-        (pygame.display.Info().current_h - 80) / rect.height)
+    enlarge = int(pygame.display.Info().current_h / rect.height)
     win_size = (
         int(rect.width * enlarge),
         int(rect.height * enlarge))
