@@ -65,7 +65,7 @@ def redraw_main(display, grid, rows, width):
 
 
 def main_loop():
-    rows = 10
+    rows = 25
     grid = make_grid(rows, rect.width)
 
     start_node = None
@@ -86,12 +86,14 @@ def main_loop():
 
             # Mouse down detection
             pressed = pygame.mouse.get_pressed()
-            if pressed[0]:  # left click (draw nodes)
+            if pressed[0]:  # left click (make nodes)
+                # Get spot
                 mouse_pos = pygame.mouse.get_pos()
                 row, col = get_clicked_pos(
                     mouse_pos, rows, rect.width, enlarge)
                 spot = grid[row][col]
 
+                # Make nodes
                 if not start_node and spot != end_node:  # make start node
                     start_node = spot
                     start_node.make_start()
@@ -101,8 +103,19 @@ def main_loop():
                 elif spot != start_node and spot != end_node:  # make barrier
                     spot.make_barrier()
 
-            elif pressed[2]:  # right click
-                pass
+            elif pressed[2]:  # right click (delete nodes)
+                # Get spot
+                mouse_pos = pygame.mouse.get_pos()
+                row, col = get_clicked_pos(
+                    mouse_pos, rows, rect.width, enlarge)
+                spot = grid[row][col]
+
+                # Delete nodes
+                spot.reset()
+                if spot == start_node:
+                    start_node = None
+                elif spot == end_node:
+                    end_node = None
 
         # Update display
         redraw_main(display, grid, rows, rect.width)
