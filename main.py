@@ -2,7 +2,6 @@ from colors import Colors
 from spot import Spot
 from queue import PriorityQueue
 import pygame
-import math
 import sys
 
 
@@ -146,6 +145,7 @@ def redraw_main(display, grid, rows, width):
 def main_loop():
     rows = 25
     grid = make_grid(rows, rect.width)
+    algorithm_runned = False
     start_node = None
     end_node = None
 
@@ -158,42 +158,45 @@ def main_loop():
                 run = False
 
             # Mouse down detection
-            pressed = pygame.mouse.get_pressed()
-            if pressed[0]:  # left click (make nodes)
-                # Get spot
-                mouse_pos = pygame.mouse.get_pos()
-                row, col = get_clicked_pos(
-                    mouse_pos, rows, rect.width, enlarge)
-                spot = grid[row][col]
+            if not algorithm_runned:
+                pressed = pygame.mouse.get_pressed()
+                if pressed[0]:  # left click (make nodes)
+                    # Get spot
+                    mouse_pos = pygame.mouse.get_pos()
+                    row, col = get_clicked_pos(
+                        mouse_pos, rows, rect.width, enlarge)
+                    spot = grid[row][col]
 
-                # Make nodes
-                if not start_node and spot != end_node:  # make start node
-                    start_node = spot
-                    start_node.make_start()
-                elif not end_node and spot != start_node:  # make end node
-                    end_node = spot
-                    end_node.make_end()
-                elif spot != start_node and spot != end_node:  # make barrier
-                    spot.make_barrier()
+                    # Make nodes
+                    if not start_node and spot != end_node:  # make start node
+                        start_node = spot
+                        start_node.make_start()
+                    elif not end_node and spot != start_node:  # make end node
+                        end_node = spot
+                        end_node.make_end()
+                    elif spot != start_node and spot != end_node:  # make barrier
+                        spot.make_barrier()
 
-            elif pressed[2]:  # right click (delete nodes)
-                # Get spot
-                mouse_pos = pygame.mouse.get_pos()
-                row, col = get_clicked_pos(
-                    mouse_pos, rows, rect.width, enlarge)
-                spot = grid[row][col]
+                elif pressed[2]:  # right click (delete nodes)
+                    # Get spot
+                    mouse_pos = pygame.mouse.get_pos()
+                    row, col = get_clicked_pos(
+                        mouse_pos, rows, rect.width, enlarge)
+                    spot = grid[row][col]
 
-                # Delete nodes
-                spot.reset()
-                if spot == start_node:
-                    start_node = None
-                elif spot == end_node:
-                    end_node = None
+                    # Delete nodes
+                    spot.reset()
+                    if spot == start_node:
+                        start_node = None
+                    elif spot == end_node:
+                        end_node = None
 
             # Keydown detection
             if event.type == pygame.KEYDOWN:
                 # Run algorithm
-                if event.key == pygame.K_SPACE and start_node and end_node:
+                if (event.key == pygame.K_SPACE) and (  # space bar is down
+                        start_node and end_node) and (  # start node and end node has been placed
+                        not algorithm_runned):  # the algorithm has not been runned
                     # Update all spots' neighbors
                     for row in grid:
                         for spot in row:
@@ -205,11 +208,15 @@ def main_loop():
                             display, grid, rows, rect.width), 
                                 grid, start_node, end_node)
 
+                    # Update algorithm runned
+                    algorithm_runned = True
+
                 # Clear the grid
                 if event.key == pygame.K_c:
+                    grid = make_grid(rows, rect.width)
+                    algorithm_runned = False
                     start_node = None
                     end_node = None
-                    grid = make_grid(rows, rect.width)
 
         # Update display
         redraw_main(display, grid, rows, rect.width)
@@ -222,7 +229,7 @@ if __name__ == "__main__":
     pygame.init()
 
     # Initialize window
-    rect = pygame.Rect(0, 0, 400, 400)
+    rect = pygame.Rect(0, 0, 800, 800)
     enlarge = int(pygame.display.Info().current_h / rect.height)
     win_size = (
         int(rect.width * enlarge),
