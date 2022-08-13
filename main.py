@@ -13,6 +13,16 @@ def get_heuristic(point1, point2):
     return abs(x1 - x2) + abs(y1 - y2)
 
 
+def reconstruct_path(came_from, current_node, redraw):
+    while current_node in came_from:
+        # Make path
+        current_node = came_from[current_node]
+        current_node.make_path()
+
+        # Update display
+        redraw()
+
+
 def algorithm(redraw, grid, start_node, end_node):
     count = 0
     open_set = PriorityQueue()
@@ -33,7 +43,7 @@ def algorithm(redraw, grid, start_node, end_node):
     while not open_set.empty():
         # Event loop
         for event in pygame.event.get():
-        # Quit detection
+            # Quit detection
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
@@ -43,6 +53,9 @@ def algorithm(redraw, grid, start_node, end_node):
 
         # Found the shortest path, hence, reconstruct the path for the visualization
         if current_node == end_node:
+            reconstruct_path(came_from, end_node, redraw)
+            start_node.make_start()
+            end_node.make_end()
             return True
 
         # Determine best path to get to every single node
@@ -133,22 +146,16 @@ def redraw_main(display, grid, rows, width):
 def main_loop():
     rows = 25
     grid = make_grid(rows, rect.width)
-
     start_node = None
     end_node = None
 
     run = True
-    started = False
     while run:
         # Event loop
         for event in pygame.event.get():
             # Quit detection
             if event.type == pygame.QUIT:
                 run = False
-
-            # Path finding has started
-            if started:
-                continue
 
             # Mouse down detection
             pressed = pygame.mouse.get_pressed()
@@ -186,7 +193,7 @@ def main_loop():
             # Keydown detection
             if event.type == pygame.KEYDOWN:
                 # Run algorithm
-                if event.key == pygame.K_SPACE and not started:
+                if event.key == pygame.K_SPACE and start_node and end_node:
                     # Update all spots' neighbors
                     for row in grid:
                         for spot in row:
@@ -197,6 +204,12 @@ def main_loop():
                         lambda: redraw_main(
                             display, grid, rows, rect.width), 
                                 grid, start_node, end_node)
+
+                # Clear the grid
+                if event.key == pygame.K_c:
+                    start_node = None
+                    end_node = None
+                    grid = make_grid(rows, rect.width)
 
         # Update display
         redraw_main(display, grid, rows, rect.width)
