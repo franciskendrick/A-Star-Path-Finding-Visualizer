@@ -24,28 +24,24 @@ class Spot:
         self.neighbors = []
 
         # Bottom neighbor
-        bottom_neighbor = grid[self.row + 1][self.col]
         if (self.row < self.total_rows - 1) and (  # check if can go down
-                not bottom_neighbor.is_barrier()):  # neighbor below is not a barrier
-            self.neighbors.append(bottom_neighbor)
+                not grid[self.row + 1][self.col].is_barrier()):  # neighbor below is not a barrier
+            self.neighbors.append(grid[self.row + 1][self.col])
 
         # Top neighbor
-        top_neighbor = grid[self.row - 1][self.col]
         if (self.row > 0) and (  # check if can go up
-                not top_neighbor.is_barrier()):  # neighbor above is not a barrier
-            self.neighbors.append(top_neighbor)
+                not grid[self.row - 1][self.col].is_barrier()):  # neighbor above is not a barrier
+            self.neighbors.append(grid[self.row - 1][self.col])
 
         # Right neighbor
-        right_neighbor = grid[self.row][self.col + 1]
         if (self.col < self.total_rows - 1) and (  # check if can go right
-                not right_neighbor.is_barrier()):  # right neighbor is not a barrier
-            self.neighbors.append(right_neighbor)
+                not grid[self.row][self.col + 1].is_barrier()):  # right neighbor is not a barrier
+            self.neighbors.append(grid[self.row][self.col + 1])
 
         # Left neighbor
-        left_neighbor = grid[self.row][self.col - 1]
         if (self.col > 0) and (  # check if can go left
-                not left_neighbor.is_barrier()):  # left neighbor is not a barrier
-            self.neighbors.append(left_neighbor)
+                not grid[self.row][self.col - 1].is_barrier()):  # left neighbor is not a barrier
+            self.neighbors.append(grid[self.row][self.col - 1])
 
     # Get position ------------------------------------------------ #
     def get_position(self):
