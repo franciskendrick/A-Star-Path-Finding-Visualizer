@@ -151,8 +151,8 @@ if __name__ == "__main__":
     pygame.init()
 
     # Initialize window
-    rect = pygame.Rect(0, 0, 800, 800)
-    enlarge = int(pygame.display.Info().current_h / rect.height)
+    rect = pygame.Rect(0, 0, 400, 400)
+    enlarge = (pygame.display.Info().current_h - 80) / rect.height
     win_size = (
         int(rect.width * enlarge),
         int(rect.height * enlarge))

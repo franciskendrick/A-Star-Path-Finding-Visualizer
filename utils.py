@@ -90,7 +90,7 @@ def get_clicked_pos(pos, rows, width, enlarge):
     row = y // gap
     col = x // gap
 
-    return row, col
+    return int(row), int(col)
 
 
 def make_grid(rows, width):

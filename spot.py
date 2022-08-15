@@ -84,7 +84,3 @@ class Spot:
 
     def make_path(self):
         self.color = Colors.purple
-
-    # Less than --------------------------------------------------- #
-    def __lt__(self):
-        pass
