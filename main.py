@@ -6,7 +6,19 @@ import sys
 
 # Redraw 
 def redraw_menu():
-    pass
+    # Draw background color
+    display.fill(Colors.white)
+
+    # Blit display to window
+    resized_display = pygame.transform.scale(
+        display, (
+            int(rect.width * enlarge), 
+            int(rect.height * enlarge))
+        )
+    win.blit(resized_display, (0, 0))
+
+    # Update display
+    pygame.display.update()
 
 
 def redraw_game(display, grid, rows, width):
@@ -162,4 +174,4 @@ if __name__ == "__main__":
     display = pygame.Surface(rect.size)
 
     # Execute
-    game_loop()
+    menu_loop()
