@@ -5,7 +5,11 @@ import sys
 
 
 # Redraw 
-def redraw_main(display, grid, rows, width):
+def redraw_menu():
+    pass
+
+
+def redraw_game(display, grid, rows, width):
     # Draw background color
     display.fill(Colors.white)
 
@@ -41,13 +45,31 @@ def redraw_main(display, grid, rows, width):
 
 
 # Loop
-def main_loop():
+def menu_loop():
+    # Loop
+    run = True
+    while run:
+        # Event loop
+        for event in pygame.event.get():
+            # Quit detection
+            if event.type == pygame.QUIT:
+                run = False
+            
+        # Update display
+        redraw_menu()
+
+    pygame.quit()
+    sys.exit()
+
+
+def game_loop():
     rows = 25
     grid = make_grid(rows, rect.width)
     algorithm_runned = False
     start_node = None
     end_node = None
 
+    # Loop
     run = True
     while run:
         # Event loop
@@ -103,7 +125,7 @@ def main_loop():
 
                     # Run algorithm
                     algorithm(
-                        lambda: redraw_main(
+                        lambda: redraw_game(
                             display, grid, rows, rect.width), 
                                 grid, start_node, end_node)
 
@@ -118,7 +140,7 @@ def main_loop():
                     end_node = None
 
         # Update display
-        redraw_main(display, grid, rows, rect.width)
+        redraw_game(display, grid, rows, rect.width)
 
     pygame.quit()
     sys.exit()
@@ -135,8 +157,9 @@ if __name__ == "__main__":
         int(rect.width * enlarge),
         int(rect.height * enlarge))
 
+    pygame.display.set_caption("A* Path Finding Visualizer")
     win = pygame.display.set_mode(win_size)
     display = pygame.Surface(rect.size)
 
     # Execute
-    main_loop()
+    game_loop()
