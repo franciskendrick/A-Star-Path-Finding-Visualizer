@@ -1,5 +1,6 @@
-from game.utils import *
-from game.colors import Colors
+from menu import Menu
+from game import utils
+from game import Colors
 import pygame
 import sys
 
@@ -76,7 +77,7 @@ def menu_loop():
 
 def game_loop():
     rows = 25
-    grid = make_grid(rows, rect.width)
+    grid = utils.make_grid(rows, rect.width)
     algorithm_runned = False
     start_node = None
     end_node = None
@@ -96,7 +97,7 @@ def game_loop():
                 if pressed[0]:  # left click (make nodes)
                     # Get spot
                     mouse_pos = pygame.mouse.get_pos()
-                    row, col = get_clicked_pos(
+                    row, col = utils.get_clicked_pos(
                         mouse_pos, rows, rect.width, enlarge)
                     spot = grid[row][col]
 
@@ -113,7 +114,7 @@ def game_loop():
                 elif pressed[2]:  # right click (delete nodes)
                     # Get spot
                     mouse_pos = pygame.mouse.get_pos()
-                    row, col = get_clicked_pos(
+                    row, col = utils.get_clicked_pos(
                         mouse_pos, rows, rect.width, enlarge)
                     spot = grid[row][col]
 
@@ -136,7 +137,7 @@ def game_loop():
                             spot.update_neighbors(grid)
 
                     # Run algorithm
-                    algorithm(
+                    utils.algorithm(
                         lambda: redraw_game(
                             display, grid, rows, rect.width), 
                                 grid, start_node, end_node)
@@ -146,7 +147,7 @@ def game_loop():
 
                 # Clear the grid
                 if event.key == pygame.K_c:
-                    grid = make_grid(rows, rect.width)
+                    grid = utils.make_grid(rows, rect.width)
                     algorithm_runned = False
                     start_node = None
                     end_node = None
