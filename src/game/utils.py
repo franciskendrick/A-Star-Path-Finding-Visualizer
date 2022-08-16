@@ -1,4 +1,4 @@
-from spot import Spot
+from game.spot import Spot
 from queue import PriorityQueue
 import pygame
 import sys

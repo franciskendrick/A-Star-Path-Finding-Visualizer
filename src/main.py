@@ -1,5 +1,5 @@
-from utils import *
-from colors import Colors
+from game.utils import *
+from game.colors import Colors
 import pygame
 import sys
 

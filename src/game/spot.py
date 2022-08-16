@@ -1,4 +1,4 @@
-from colors import Colors
+from game.colors import Colors
 import pygame
 
 
