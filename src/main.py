@@ -174,4 +174,4 @@ if __name__ == "__main__":
     display = pygame.Surface(rect.size)
 
     # Execute
-    menu_loop()
+    game_loop()
