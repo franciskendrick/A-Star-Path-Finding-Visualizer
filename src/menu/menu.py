@@ -1,4 +1,5 @@
 from .title import Title
+from .tutorial import Tutorial
 import pygame
 
 pygame.init()
@@ -16,6 +17,7 @@ class Menu:
         )
 
         self.title = Title()
+        self.tutorial = Tutorial()
 
     def draw(self, display):
         # Fill menu's display with a transparent background
@@ -23,6 +25,7 @@ class Menu:
 
         # Draw menu window on menu's display
         self.title.draw(self.display)
+        self.tutorial.draw(self.display)
 
         # Blit menu's display to original display
         resized_menu_display = pygame.transform.scale(

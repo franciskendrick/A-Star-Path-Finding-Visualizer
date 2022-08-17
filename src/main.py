@@ -182,4 +182,4 @@ if __name__ == "__main__":
     menu = Menu(rect.size)
 
     # Execute
-    game_loop()
+    menu_loop()

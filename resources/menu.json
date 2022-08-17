@@ -1,3 +1,7 @@
 {
-    "title_position": [8, 20]
+    "title_position": [8, 20],
+    "tutorial_positions": {
+        "clear": [78, 180],
+        "run_algorithm": [43, 190]
+    }
 }
