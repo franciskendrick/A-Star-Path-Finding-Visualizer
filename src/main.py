@@ -1,5 +1,5 @@
 from menu import Menu
-from game import utils
+from game import GameUtilities
 from game import Colors
 import pygame
 import sys
@@ -80,7 +80,7 @@ def menu_loop():
 
 def game_loop():
     rows = 25
-    grid = utils.make_grid(rows, rect.width)
+    grid = game_utils.make_grid(rows, rect.width)
     algorithm_runned = False
     start_node = None
     end_node = None
@@ -100,7 +100,7 @@ def game_loop():
                 if pressed[0]:  # left click (make nodes)
                     # Get spot
                     mouse_pos = pygame.mouse.get_pos()
-                    row, col = utils.get_clicked_pos(
+                    row, col = game_utils.get_clicked_pos(
                         mouse_pos, rows, rect.width, enlarge)
                     spot = grid[row][col]
 
@@ -117,7 +117,7 @@ def game_loop():
                 elif pressed[2]:  # right click (delete nodes)
                     # Get spot
                     mouse_pos = pygame.mouse.get_pos()
-                    row, col = utils.get_clicked_pos(
+                    row, col = game_utils.get_clicked_pos(
                         mouse_pos, rows, rect.width, enlarge)
                     spot = grid[row][col]
 
@@ -140,7 +140,7 @@ def game_loop():
                             spot.update_neighbors(grid)
 
                     # Run algorithm
-                    utils.algorithm(
+                    game_utils.algorithm(
                         lambda: redraw_game(
                             display, grid, rows, rect.width), 
                                 grid, start_node, end_node)
@@ -150,7 +150,7 @@ def game_loop():
 
                 # Clear the grid
                 if event.key == pygame.K_c:
-                    grid = utils.make_grid(rows, rect.width)
+                    grid = game_utils.make_grid(rows, rect.width)
                     algorithm_runned = False
                     start_node = None
                     end_node = None
@@ -178,7 +178,8 @@ if __name__ == "__main__":
     display = pygame.Surface(rect.size)
 
     # Initialize menu
+    game_utils = GameUtilities()
     menu = Menu(rect.size)
 
     # Execute
-    menu_loop()
+    game_loop()
