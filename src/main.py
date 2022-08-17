@@ -10,6 +10,9 @@ def redraw_menu():
     # Draw background color
     display.fill(Colors.white)
 
+    # Draw menu
+    menu.draw(display)
+
     # Blit display to window
     resized_display = pygame.transform.scale(
         display, (
@@ -163,7 +166,7 @@ def game_loop():
 if __name__ == "__main__":
     pygame.init()
 
-    # Initialize window
+    # Initialize pygame window
     rect = pygame.Rect(0, 0, 400, 400)
     enlarge = (pygame.display.Info().current_h - 80) / rect.height
     win_size = (
@@ -174,5 +177,8 @@ if __name__ == "__main__":
     win = pygame.display.set_mode(win_size)
     display = pygame.Surface(rect.size)
 
+    # Initialize menu
+    menu = Menu(rect.size)
+
     # Execute
-    game_loop()
+    menu_loop()

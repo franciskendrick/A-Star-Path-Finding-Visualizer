@@ -17,7 +17,16 @@ with open(f"{resources_path}/menu.json") as json_file:
 
 class Title:
     def __init__(self):
-        pass
+        self.image = pygame.image.load(
+            f"{resources_path}/title.png")
+        self.rect = pygame.Rect(
+            menu_data["title_position"], self.image.get_size())
 
     def draw(self, display):
-        pass
+        # Resize title image
+        wd, ht = self.image.get_size()
+        resized_image = pygame.transform.scale(
+            self.image, (wd * 2, ht * 2))
+        
+        # Draw
+        display.blit(resized_image, self.rect)
