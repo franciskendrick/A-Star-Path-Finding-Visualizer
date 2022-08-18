@@ -70,6 +70,16 @@ def menu_loop():
             # Quit detection
             if event.type == pygame.QUIT:
                 run = False
+
+            # Menu buttons' down detection
+            if event.type == pygame.MOUSEBUTTONUP and event.button == 1:  # left-click has been uped
+                btn_pressed = menu.buttons.button_down_detection()
+                if btn_pressed == "play":
+                    game_loop(menu.buttons.get_rows())
+
+            # Menu buttons' over detection
+            if event.type == pygame.MOUSEMOTION:
+                menu.buttons.button_over_detection()
             
         # Update display
         redraw_menu()
@@ -78,8 +88,7 @@ def menu_loop():
     sys.exit()
 
 
-def game_loop():
-    rows = 25
+def game_loop(rows):
     grid = game_utils.make_grid(rows, rect.width)
     algorithm_runned = False
     start_node = None

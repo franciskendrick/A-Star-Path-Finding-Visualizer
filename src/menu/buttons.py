@@ -75,6 +75,9 @@ class Buttons:
 
         self.gridsize = {}
         for name, img in zip(order, images):
+            # Toggle status
+            toggle_status = True if name == "25x25" else False
+
             # Initialize image
             wd, ht = img.get_size()
             resized_img = pygame.transform.scale(
@@ -97,6 +100,7 @@ class Buttons:
             # Append to buttons
             button = [
                 False,  # if mouse is over
+                toggle_status,  # toggle status
                 resized_img,  # orignal image
                 resized_hoverimg,  # hover image
                 rect,  # image's rectangle
@@ -133,18 +137,52 @@ class Buttons:
 
         # Draw gridsize buttons
         for button in self.gridsize.values():
-            mouse_is_over, orig_img, hover_img, rect, _ = button
-            img = hover_img if mouse_is_over else orig_img
-
+            mouse_is_over, toggle_status, orig_img, hover_img, rect, _ = button
+            # img = hover_img if mouse_is_over or toggle_status else orig_img
+            if mouse_is_over or toggle_status:
+                img = hover_img
+            else:
+                img = orig_img
+            
             display.blit(img, rect)
 
     # Action detection -------------------------------------------- #
     def button_down_detection(self):
-        pass
+        # Gridsize buttons
+        for button in self.gridsize.values():
+            *_, hitbox = button
+
+            mouse_pos = pygame.mouse.get_pos()
+            if hitbox.collidepoint(mouse_pos):
+                for new_button in self.gridsize.values():
+                    new_button[1] = False
+                button[1] = True  # toggle status
+
+                break
+
+        # Play button
+        *_, hitbox = self.play
+        
+        mouse_pos = pygame.mouse.get_pos()
+        if hitbox.collidepoint(mouse_pos):
+            return "play"
 
     def button_over_detection(self):
-        pass
+        # Gridsize buttons
+        for button in self.gridsize.values():
+            *_, hitbox = button
+
+            mouse_pos = pygame.mouse.get_pos()
+            button[0] = True if hitbox.collidepoint(mouse_pos) else False
+
+        # Play button
+        *_, hitbox = self.play
+
+        mouse_pos = pygame.mouse.get_pos()
+        self.play[0] = True if hitbox.collidepoint(mouse_pos) else False
 
     # Functions --------------------------------------------------- #
-    def reset_overdetection(self):
-        pass
+    def get_rows(self):
+        for (name, button) in self.gridsize.items():
+            if button[1]:  # toggle status
+                return int(name.split("x")[0])
