@@ -3,5 +3,15 @@
     "tutorial_positions": {
         "clear": [78, 180],
         "run_algorithm": [43, 190]
-    }
+    },
+    "buttons_positions": {
+        "play": [73, 63],
+        "5x5": [37, 111],
+        "10x10": [37, 129],
+        "20x20": [37, 147],
+        "25x25": [105, 111],
+        "40x40": [105, 129],
+        "50x50": [105, 147]
+    },
+    "gridsizelabel_position": [27, 91]
 }

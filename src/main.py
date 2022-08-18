@@ -179,7 +179,7 @@ if __name__ == "__main__":
 
     # Initialize menu
     game_utils = GameUtilities()
-    menu = Menu(rect.size)
+    menu = Menu(rect.size, enlarge)
 
     # Execute
     menu_loop()
