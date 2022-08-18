@@ -122,7 +122,21 @@ class Buttons:
 
     # Draw -------------------------------------------------------- #
     def draw(self, display):
-        pass
+        # Draw play button
+        mouse_is_over, orig_img, hover_img, rect, _ = self.play
+        img = hover_img if mouse_is_over else orig_img
+
+        display.blit(img, rect)
+
+        # Draw gridsize label
+        display.blit(*self.gridsize_label)
+
+        # Draw gridsize buttons
+        for button in self.gridsize.values():
+            mouse_is_over, orig_img, hover_img, rect, _ = button
+            img = hover_img if mouse_is_over else orig_img
+
+            display.blit(img, rect)
 
     # Action detection -------------------------------------------- #
     def button_down_detection(self):
